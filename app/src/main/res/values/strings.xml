@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">ChessClock</string>
+    <string name="whites_turn">Whites Turn</string>
+    <string name="blacks_turn">Blacks Turn</string>
+    <string name="start_game">Start Game</string>
+    <string name="_10">10</string>
+    <string name="min_per_player">min per player</string>
+    <string name="white">White</string>
+    <string name="black">Black</string>
+    <string name="sec_delay_per_turn">sec delay per turn</string>
+    <string name="start_delay_in_final_t_t_t_t_t_t_min">start delay in final \t\t\t\t\t\t min</string>
+    <string name="pause">Pause</string>
+    <string name="restart">Restart</string>
+    <string name="_3">3</string>
+    <string name="_0_5">0.5</string>
+    <string name="add_delay_to_timer">add delay to timer</string>
+</resources>
