@@ -55,24 +55,11 @@ public class MainActivity extends AppCompatActivity {
         EditText[] myEditTexts = {min, delay, thr};
 
         ConstraintLayout layout = findViewById(R.id.layout);
-        layout.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                  for (EditText mEditText : myEditTexts) {
-                      if (mEditText.isFocused()) {
-                          Rect outRect = new Rect();
-                          mEditText.getGlobalVisibleRect(outRect);
-                          if (!outRect.contains((int) event.getRawX(), (int) event.getRawY())) {
-                              mEditText.clearFocus();
-                              InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                              imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                          }
-                      }
-                  }
-                }
-                return false;
+        layout.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+              clearEditTexts(myEditTexts, v, event);
             }
+            return false;
         });
         /*
             Pause the game, Button change turn is disabled
@@ -124,6 +111,11 @@ public class MainActivity extends AppCompatActivity {
                 /*
                     Button click on Start Game
                  */
+
+                // clear Fokus of EditText fields
+
+                clearEditTexts(myEditTexts, view, null);
+
                 chess_clock.setTimer(min.getText().toString());
                 chess_clock.setDelay(Double.parseDouble(delay.getText().toString()));
                 chess_clock.setThr(Double.parseDouble(thr.getText().toString()));
@@ -228,6 +220,26 @@ public class MainActivity extends AppCompatActivity {
 
         Thread myThread = new Thread(myRunnable);
         myThread.start();
+    }
+
+    private void clearEditTexts(EditText[] myEditTexts, View v, MotionEvent event) {
+        for (EditText mEditText : myEditTexts) {
+            if (mEditText.isFocused()) {
+                if (event == null){
+                    mEditText.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                } else {
+                    Rect outRect = new Rect();
+                    mEditText.getGlobalVisibleRect(outRect);
+                    if (!outRect.contains((int) event.getRawX(), (int) event.getRawY())) {
+                        mEditText.clearFocus();
+                        InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                    }
+                }
+            }
+        }
     }
 
     public void sleep(long millis){
