@@ -1,11 +1,16 @@
 package com.example.chessclock;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import android.content.Context;
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
@@ -23,12 +28,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         chess_clock = new ChessClock();
-        long millis = 10;
+        long millis = 30;
         AtomicBoolean change_turn = new AtomicBoolean(false);
 
         /*
             Finding UI elements by ID
          */
+
         EditText min = findViewById(R.id.min);
         EditText delay = findViewById(R.id.delay);
         EditText thr = findViewById(R.id.thr);
@@ -46,6 +52,28 @@ public class MainActivity extends AppCompatActivity {
         Button restartButton = findViewById(R.id.restart);
         Button pauseButton = findViewById(R.id.pause);
 
+        EditText[] myEditTexts = {min, delay, thr};
+
+        ConstraintLayout layout = findViewById(R.id.layout);
+        layout.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                  for (EditText mEditText : myEditTexts) {
+                      if (mEditText.isFocused()) {
+                          Rect outRect = new Rect();
+                          mEditText.getGlobalVisibleRect(outRect);
+                          if (!outRect.contains((int) event.getRawX(), (int) event.getRawY())) {
+                              mEditText.clearFocus();
+                              InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                              imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                          }
+                      }
+                  }
+                }
+                return false;
+            }
+        });
         /*
             Pause the game, Button change turn is disabled
         */
@@ -221,7 +249,7 @@ public class MainActivity extends AppCompatActivity {
         }
         int min = (int)(timer / 60);
         int sec = (int)(timer % 60);
-        int hun = (int)((timer * 100) % 60);
+        int hun = (int)((timer * 100) % 100);
         String text = "";
         if (min < 10) {
             text += "0" + min + ":";
