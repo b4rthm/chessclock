@@ -6,10 +6,12 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         chess_clock = new ChessClock();
         long millis = 30;
@@ -199,10 +203,8 @@ public class MainActivity extends AppCompatActivity {
                                     if (change_turn.get()) {
                                         chess_clock.change_turn();
                                         if (chess_clock.get_whites_turn()){
-                                            mainButton.setText("Whites Turn");
                                             update_text_view(textView_b, textView_b2, false);
                                         } else {
-                                            mainButton.setText("Blacks Turn");
                                             update_text_view(textView_w, textView_w2, true);
                                         }
                                         change_turn.set(false);
