@@ -15,6 +15,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     ChessClock chess_clock;
     boolean game_over;
+    boolean rotateLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         Button mainButton = findViewById(R.id.mainButton);
         Button restartButton = findViewById(R.id.restart);
         Button pauseButton = findViewById(R.id.pause);
+        ImageButton changeLayoutButton = findViewById(R.id.changeLayout);
 
         EditText[] myEditTexts = {min, delay, thr};
 
@@ -65,6 +68,11 @@ public class MainActivity extends AppCompatActivity {
             }
             return false;
         });
+
+        changeLayoutButton.setOnClickListener(view -> {
+            toggleLayoutState();
+        });
+
         /*
             Pause the game, Button change turn is disabled
         */
@@ -98,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
             textView_w2.setVisibility(View.INVISIBLE);
             pauseButton.setVisibility(View.INVISIBLE);
             restartButton.setVisibility(View.INVISIBLE);
+            changeLayoutButton.setVisibility(View.INVISIBLE);
 
             game_over = false;
         });
@@ -136,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
                 black.setVisibility(View.VISIBLE);
                 pauseButton.setVisibility(View.VISIBLE);
                 restartButton.setVisibility(View.VISIBLE);
+                changeLayoutButton.setVisibility(View.VISIBLE);
 
                 pauseButton.setClickable(true);
                 mainButton.setClickable(true);
@@ -222,6 +232,10 @@ public class MainActivity extends AppCompatActivity {
 
         Thread myThread = new Thread(myRunnable);
         myThread.start();
+    }
+
+    private void toggleLayoutState() {
+        rotateLayout = !rotateLayout;
     }
 
     private void clearEditTexts(EditText[] myEditTexts, View v, MotionEvent event) {

@@ -238,4 +238,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageButton
+        android:id="@+id/changeLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/pause"
+        app:layout_constraintEnd_toStartOf="@+id/pause"
+        app:layout_constraintStart_toEndOf="@+id/restart"
+        app:layout_constraintTop_toTopOf="@+id/pause"
+        app:srcCompat="@android:drawable/stat_notify_sync" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
