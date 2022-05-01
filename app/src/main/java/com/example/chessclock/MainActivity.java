@@ -23,58 +23,79 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
     ChessClock chess_clock;
-
     boolean game_over;
-
-    boolean rotateLayout;
+    int rotateLayout;
+    EditText min;
+    EditText delay;
+    TextView thr_tw;
+    EditText thr;
+    TextView min_tw;
+    TextView delay_tw;
+    Switch sw;
+    TextView white;
+    TextView black;
+    TextView textView_w;
+    TextView textView_w2;
+    TextView textView_b;
+    TextView textView_b2;
+    Button mainButton;
+    Button restartButton;
+    Button pauseButton;
+    ImageButton changeLayoutButton;
+    ConstraintLayout layout;
+    ConstraintLayout whiteLayout;
+    ConstraintLayout blackLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         chess_clock = new ChessClock();
         long millis = 30;
         AtomicBoolean change_turn = new AtomicBoolean(false);
-
+        AtomicBoolean change_layout = new AtomicBoolean(false);
         /*
             Finding UI elements by ID
          */
-
-        EditText min = findViewById(R.id.min);
-        EditText delay = findViewById(R.id.delay);
-        EditText thr = findViewById(R.id.thr);
-        TextView thr_tw = findViewById(R.id.thr_tw);
-        TextView min_tw = findViewById(R.id.min_tw);
-        TextView delay_tw = findViewById(R.id.delay_tw);
-        Switch sw = findViewById(R.id.switch1);
-        TextView white = findViewById(R.id.white);
-        TextView black = findViewById(R.id.black);
-        TextView textView_w = findViewById(R.id.textView_w);
-        TextView textView_w2 = findViewById(R.id.textView_w2);
-        TextView textView_b = findViewById(R.id.textView_b);
-        TextView textView_b2 = findViewById(R.id.textView_b2);
-        Button mainButton = findViewById(R.id.mainButton);
-        Button restartButton = findViewById(R.id.restart);
-        Button pauseButton = findViewById(R.id.pause);
-        ImageButton changeLayoutButton = findViewById(R.id.changeLayout);
-
+        min = findViewById(R.id.min);
+        delay = findViewById(R.id.delay);
+        thr = findViewById(R.id.thr);
+        thr_tw = findViewById(R.id.thr_tw);
+        min_tw = findViewById(R.id.min_tw);
+        delay_tw = findViewById(R.id.delay_tw);
+        sw = findViewById(R.id.switch1);
+        white = findViewById(R.id.white);
+        black = findViewById(R.id.black);
+        textView_w = findViewById(R.id.textView_w);
+        textView_w2 = findViewById(R.id.textView_w2);
+        textView_b = findViewById(R.id.textView_b);
+        textView_b2 = findViewById(R.id.textView_b2);
+        mainButton = findViewById(R.id.mainButton);
+        restartButton = findViewById(R.id.restart);
+        pauseButton = findViewById(R.id.pause);
+        changeLayoutButton = findViewById(R.id.changeLayout);
+        layout = findViewById(R.id.layout);
+        whiteLayout = findViewById(R.id.white_layout);
+        blackLayout = findViewById(R.id.black_layout);
+        /*
+            Remove fokus from EditTexts
+         */
         EditText[] myEditTexts = {min, delay, thr};
-
-        ConstraintLayout layout = findViewById(R.id.layout);
         layout.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                clearEditTexts(myEditTexts, v, event);
+                removeFokus(myEditTexts, v, event);
             }
             return false;
         });
-
+        /*
+            Increment layout state
+         */
         changeLayoutButton.setOnClickListener(view -> {
-            toggleLayoutState();
+            incrementLayoutState();
+            change_layout.set(true);
         });
-
         /*
             Pause the game, Button change turn is disabled
         */
@@ -82,7 +103,6 @@ public class MainActivity extends AppCompatActivity {
             chess_clock.toggle_game_running();
             mainButton.setClickable(chess_clock.is_game_running());
         });
-
         /*
             Restarting, showing setup screen.
         */
@@ -90,30 +110,15 @@ public class MainActivity extends AppCompatActivity {
             chess_clock = new ChessClock();
 
             mainButton.setClickable(true);
-            mainButton.setText(R.string.start_game);
+            mainButton.setText(R.string.mainButtonStart);
 
-            min.setVisibility(View.VISIBLE);
-            min_tw.setVisibility(View.VISIBLE);
-            delay.setVisibility(View.VISIBLE);
-            delay_tw.setVisibility(View.VISIBLE);
-            thr.setVisibility(View.VISIBLE);
-            thr_tw.setVisibility(View.VISIBLE);
-            sw.setVisibility(View.VISIBLE);
-            white.setVisibility(View.INVISIBLE);
-            black.setVisibility(View.INVISIBLE);
-            textView_b.setVisibility(View.INVISIBLE);
-            textView_b2.setVisibility(View.INVISIBLE);
-            textView_w.setVisibility(View.INVISIBLE);
-            textView_w2.setVisibility(View.INVISIBLE);
-            pauseButton.setVisibility(View.INVISIBLE);
-            restartButton.setVisibility(View.INVISIBLE);
-            changeLayoutButton.setVisibility(View.INVISIBLE);
+            setGameUiVisible(false);
 
-            setRotateLayout(false);
+            setRotateLayout(0);
+            doRotateLayout();
 
             game_over = false;
         });
-
         /*
             Starting game or changing turn with this button
         */
@@ -126,34 +131,20 @@ public class MainActivity extends AppCompatActivity {
 
             } else {
                 /*
-                    Button click on Start Game
+                    Button click on Start Game,
                  */
-
-                // clear Fokus of EditText fields
-
-                clearEditTexts(myEditTexts, view, null);
+                removeFokus(myEditTexts, view, null);
 
                 chess_clock.setTimer(min.getText().toString());
                 chess_clock.setDelay(Double.parseDouble(delay.getText().toString()));
                 chess_clock.setThr(Double.parseDouble(thr.getText().toString()));
                 chess_clock.setAdd(sw.isChecked());
 
-                min.setVisibility(View.INVISIBLE);
-                min_tw.setVisibility(View.INVISIBLE);
-                delay.setVisibility(View.INVISIBLE);
-                delay_tw.setVisibility(View.INVISIBLE);
-                thr.setVisibility(View.INVISIBLE);
-                thr_tw.setVisibility(View.INVISIBLE);
-                sw.setVisibility(View.INVISIBLE);
-                white.setVisibility(View.VISIBLE);
-                black.setVisibility(View.VISIBLE);
-                pauseButton.setVisibility(View.VISIBLE);
-                restartButton.setVisibility(View.VISIBLE);
-                changeLayoutButton.setVisibility(View.VISIBLE);
+                setGameUiVisible(true);
 
                 pauseButton.setClickable(true);
                 mainButton.setClickable(true);
-                mainButton.setText(R.string.whites_turn);
+                mainButton.setText(R.string.mainButtonSwitch);
 
                 chess_clock.set_whites_turn(false);
                 chess_clock.change_turn();
@@ -166,8 +157,10 @@ public class MainActivity extends AppCompatActivity {
                 chess_clock.set_game_running(true);
             }
         });
-
-        Runnable myRunnable = new Runnable() {
+        /*
+            Game Logic
+         */
+        Runnable gameRunnable = new Runnable() {
             @Override
             public void run() {
                 while (true) {
@@ -185,11 +178,6 @@ public class MainActivity extends AppCompatActivity {
                                     textView_w.setVisibility(View.INVISIBLE);
 
                                     mainButton.setText(chess_clock.game_over_message());
-                                    if (isRotateLayout() && chess_clock.get_whites_turn()) {
-                                        mainButton.setRotation(0);
-                                    } else {
-                                        mainButton.setRotation(180);
-                                    }
 
                                     chess_clock.set_game_running(false);
                                     pauseButton.setClickable(false);
@@ -230,25 +218,18 @@ public class MainActivity extends AppCompatActivity {
                                             update_text_view(textView_w, textView_w2, true);
                                         }
                                         change_turn.set(false);
+                                        doRotateLayout();
                                     }
                                 }
                                 /*
                                     Rotate stuff, when in changeLayout mode
                                  */
-                                if (isRotateLayout()) {
-                                    white.setRotation(180);
-                                    textView_w.setRotation(180);
-                                    textView_w2.setRotation(180);
-                                    if (chess_clock.get_whites_turn()) {
-                                        mainButton.setRotation(180);
-                                    } else {
-                                        mainButton.setRotation(0);
-                                    }
-                                } else {
-                                    white.setRotation(0);
-                                    textView_w.setRotation(0);
-                                    textView_w2.setRotation(0);
-                                    mainButton.setRotation(0);
+                                if (change_layout.get()) {
+                                    /*
+                                        3 Different layout modes
+                                     */
+                                    doRotateLayout();
+                                    change_layout.set(false);
                                 }
                             }
                         });
@@ -256,24 +237,84 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
-
-        Thread myThread = new Thread(myRunnable);
+        Thread myThread = new Thread(gameRunnable);
         myThread.start();
     }
 
-    public void setRotateLayout(boolean rotateLayout) {
+    private void setGameUiVisible(boolean b) {
+        if (b) {
+            min.setVisibility(View.INVISIBLE);
+            min_tw.setVisibility(View.INVISIBLE);
+            delay.setVisibility(View.INVISIBLE);
+            delay_tw.setVisibility(View.INVISIBLE);
+            thr.setVisibility(View.INVISIBLE);
+            thr_tw.setVisibility(View.INVISIBLE);
+            sw.setVisibility(View.INVISIBLE);
+            white.setVisibility(View.VISIBLE);
+            black.setVisibility(View.VISIBLE);
+            pauseButton.setVisibility(View.VISIBLE);
+            restartButton.setVisibility(View.VISIBLE);
+            changeLayoutButton.setVisibility(View.VISIBLE);
+        } else {
+            min.setVisibility(View.VISIBLE);
+            min_tw.setVisibility(View.VISIBLE);
+            delay.setVisibility(View.VISIBLE);
+            delay_tw.setVisibility(View.VISIBLE);
+            thr.setVisibility(View.VISIBLE);
+            thr_tw.setVisibility(View.VISIBLE);
+            sw.setVisibility(View.VISIBLE);
+            white.setVisibility(View.INVISIBLE);
+            black.setVisibility(View.INVISIBLE);
+            textView_b.setVisibility(View.INVISIBLE);
+            textView_b2.setVisibility(View.INVISIBLE);
+            textView_w.setVisibility(View.INVISIBLE);
+            textView_w2.setVisibility(View.INVISIBLE);
+            pauseButton.setVisibility(View.INVISIBLE);
+            restartButton.setVisibility(View.INVISIBLE);
+            changeLayoutButton.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private void doRotateLayout() {
+        if (getRotateLayout() % 4 == 0) {
+            whiteLayout.setRotation(0);
+            mainButton.setRotation(0);
+            blackLayout.setRotation(0);
+
+        } else if (getRotateLayout() % 4 == 1) {
+            whiteLayout.setRotation(180);
+            if (chess_clock.get_whites_turn()) {
+                mainButton.setRotation(180);
+            } else {
+                mainButton.setRotation(0);
+            }
+            blackLayout.setRotation(0);
+
+        } else if (getRotateLayout() % 4 == 2) {
+            whiteLayout.setRotation(90);
+            blackLayout.setRotation(90);
+            mainButton.setRotation(90);
+
+        } else if (getRotateLayout() % 4 == 3) {
+            whiteLayout.setRotation(270);
+            blackLayout.setRotation(270);
+            mainButton.setRotation(270);
+        }
+    }
+
+    public void setRotateLayout(int rotateLayout) {
         this.rotateLayout = rotateLayout;
     }
 
-    public boolean isRotateLayout() {
+    public int getRotateLayout() {
         return rotateLayout;
     }
 
-    private void toggleLayoutState() {
-        rotateLayout = !rotateLayout;
+    private void incrementLayoutState() {
+        rotateLayout += 1;
     }
 
-    private void clearEditTexts(EditText[] myEditTexts, View v, MotionEvent event) {
+    private void removeFokus(EditText[] myEditTexts, View v, MotionEvent event) {
         for (EditText mEditText : myEditTexts) {
             if (mEditText.isFocused()) {
                 if (event == null) {
