@@ -23,7 +23,9 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
     ChessClock chess_clock;
+
     boolean game_over;
+
     boolean rotateLayout;
 
     @Override
@@ -64,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         ConstraintLayout layout = findViewById(R.id.layout);
         layout.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
-              clearEditTexts(myEditTexts, v, event);
+                clearEditTexts(myEditTexts, v, event);
             }
             return false;
         });
@@ -85,8 +87,7 @@ public class MainActivity extends AppCompatActivity {
             Restarting, showing setup screen.
         */
         restartButton.setOnClickListener(view -> {
-            chess_clock.set_game_running(false);
-            chess_clock.setTimer(min.getText().toString());
+            chess_clock = new ChessClock();
 
             mainButton.setClickable(true);
             mainButton.setText(R.string.start_game);
@@ -108,6 +109,8 @@ public class MainActivity extends AppCompatActivity {
             restartButton.setVisibility(View.INVISIBLE);
             changeLayoutButton.setVisibility(View.INVISIBLE);
 
+            setRotateLayout(false);
+
             game_over = false;
         });
 
@@ -115,11 +118,12 @@ public class MainActivity extends AppCompatActivity {
             Starting game or changing turn with this button
         */
         mainButton.setOnClickListener(view -> {
-            if(chess_clock.is_game_running()) {
+            if (chess_clock.is_game_running()) {
                 /*
                     Button click on "(Whites|Blacks) Turn"
                  */
                 change_turn.set(true);
+
             } else {
                 /*
                     Button click on Start Game
@@ -151,14 +155,15 @@ public class MainActivity extends AppCompatActivity {
                 mainButton.setClickable(true);
                 mainButton.setText(R.string.whites_turn);
 
-                chess_clock.set_game_running(true);
-                chess_clock.set_whites_turn(true);
-                chess_clock.set_delay(chess_clock.get_timer_w());
+                chess_clock.set_whites_turn(false);
+                chess_clock.change_turn();
 
                 update_text_view(textView_w, textView_w2, true);
                 update_text_view(textView_b, textView_b2, false);
                 textView_w.setVisibility(View.VISIBLE);
                 textView_b.setVisibility(View.VISIBLE);
+
+                chess_clock.set_game_running(true);
             }
         });
 
@@ -167,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 while (true) {
                     if (chess_clock.is_game_over()) {
-                        if (! game_over ) {
+                        if (!game_over) {
                             /*
                                 Display game over screen once, then waits for click on restart
                              */
@@ -180,6 +185,12 @@ public class MainActivity extends AppCompatActivity {
                                     textView_w.setVisibility(View.INVISIBLE);
 
                                     mainButton.setText(chess_clock.game_over_message());
+                                    if (isRotateLayout() && chess_clock.get_whites_turn()) {
+                                        mainButton.setRotation(0);
+                                    } else {
+                                        mainButton.setRotation(180);
+                                    }
+
                                     chess_clock.set_game_running(false);
                                     pauseButton.setClickable(false);
                                     mainButton.setClickable(false);
@@ -196,12 +207,13 @@ public class MainActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                /*
+                                    Make a step and updating timer
+                                    only when game is running
+                                */
                                 if (chess_clock.is_game_running()) {
-                                    /*
-                                        Make a step and updating timer
-                                     */
                                     chess_clock.reduce_timer(millis);
-                                    if (chess_clock.get_whites_turn()){
+                                    if (chess_clock.get_whites_turn()) {
                                         update_text_view(textView_w, textView_w2, true);
                                     } else {
                                         update_text_view(textView_b, textView_b2, false);
@@ -212,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
                                      */
                                     if (change_turn.get()) {
                                         chess_clock.change_turn();
-                                        if (chess_clock.get_whites_turn()){
+                                        if (chess_clock.get_whites_turn()) {
                                             update_text_view(textView_b, textView_b2, false);
                                         } else {
                                             update_text_view(textView_w, textView_w2, true);
@@ -221,8 +233,23 @@ public class MainActivity extends AppCompatActivity {
                                     }
                                 }
                                 /*
-                                    Do nothing, if not running
+                                    Rotate stuff, when in changeLayout mode
                                  */
+                                if (isRotateLayout()) {
+                                    white.setRotation(180);
+                                    textView_w.setRotation(180);
+                                    textView_w2.setRotation(180);
+                                    if (chess_clock.get_whites_turn()) {
+                                        mainButton.setRotation(180);
+                                    } else {
+                                        mainButton.setRotation(0);
+                                    }
+                                } else {
+                                    white.setRotation(0);
+                                    textView_w.setRotation(0);
+                                    textView_w2.setRotation(0);
+                                    mainButton.setRotation(0);
+                                }
                             }
                         });
                     }
@@ -234,6 +261,14 @@ public class MainActivity extends AppCompatActivity {
         myThread.start();
     }
 
+    public void setRotateLayout(boolean rotateLayout) {
+        this.rotateLayout = rotateLayout;
+    }
+
+    public boolean isRotateLayout() {
+        return rotateLayout;
+    }
+
     private void toggleLayoutState() {
         rotateLayout = !rotateLayout;
     }
@@ -241,7 +276,7 @@ public class MainActivity extends AppCompatActivity {
     private void clearEditTexts(EditText[] myEditTexts, View v, MotionEvent event) {
         for (EditText mEditText : myEditTexts) {
             if (mEditText.isFocused()) {
-                if (event == null){
+                if (event == null) {
                     mEditText.clearFocus();
                     InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
@@ -258,7 +293,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void sleep(long millis){
+    public void sleep(long millis) {
         try {
             Thread.sleep(millis);
         } catch (InterruptedException e) {
@@ -266,7 +301,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void update_text_view(TextView text_view, TextView text_view_delay, boolean white){
+    public void update_text_view(TextView text_view, TextView text_view_delay, boolean white) {
         double timer, timer_delay;
         if (white) {
             timer = chess_clock.get_timer_w();
@@ -275,9 +310,9 @@ public class MainActivity extends AppCompatActivity {
             timer = chess_clock.get_timer_b();
             timer_delay = chess_clock.get_timer_delay_b();
         }
-        int min = (int)(timer / 60);
-        int sec = (int)(timer % 60);
-        int hun = (int)((timer * 100) % 100);
+        int min = (int) (timer / 60);
+        int sec = (int) (timer % 60);
+        int hun = (int) ((timer * 100) % 100);
         String text = "";
         if (min < 10) {
             text += "0" + min + ":";
@@ -296,12 +331,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (timer_delay > 0) {
-            text_view_delay.setText((int)timer_delay + " sec delay");
+            text_view_delay.setText((int) timer_delay + " sec delay");
             text_view_delay.setVisibility(View.VISIBLE);
         } else {
             text_view_delay.setVisibility(View.INVISIBLE);
         }
         text_view.setText(text);
     }
-    // MainActivity end
 }

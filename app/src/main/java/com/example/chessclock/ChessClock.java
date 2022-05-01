@@ -39,11 +39,11 @@ public class ChessClock {
         this.game_running = b;
     }
 
-    public boolean is_game_running(){
+    public boolean is_game_running() {
         return game_running;
     }
 
-    public  boolean is_game_over(){
+    public boolean is_game_over() {
         return (timer_w <= 0) || (timer_b <= 0);
     }
 
@@ -51,36 +51,38 @@ public class ChessClock {
         this.game_running = !this.game_running;
     }
 
-    public void setTimer(String min_text){
-        if (min_text.contains(",")){
+    public void setTimer(String min_text) {
+        if (min_text.contains(",")) {
             String[] mins = min_text.split(",");
-            this.timer_w = Double.parseDouble(mins[0])*60;
-            this.timer_b = Double.parseDouble(mins[1])*60;
+            this.timer_w = Double.parseDouble(mins[0]) * 60;
+            this.timer_b = Double.parseDouble(mins[1]) * 60;
         } else {
-            this.timer_w = Double.parseDouble(min_text)*60;
+            this.timer_w = Double.parseDouble(min_text) * 60;
             this.timer_b = this.timer_w;
         }
     }
 
-    public void setDelay(double delay){
+    public void setDelay(double delay) {
         this.time_delay = delay;
     }
 
-    public void setThr(double thr){
-        this.threshold_td = thr*60;
+    public void setThr(double thr) {
+        this.threshold_td = thr * 60;
     }
 
-    public void setAdd(boolean value){ this.add_delay = value; }
+    public void setAdd(boolean value) {
+        this.add_delay = value;
+    }
 
-    public double set_delay(double timer){
-        if (timer <= threshold_td){
+    public double set_delay(double timer) {
+        if (timer <= threshold_td) {
             return time_delay;
         } else {
             return 0;
         }
     }
 
-    public String game_over_message(){
+    public String game_over_message() {
         String winner;
         if (timer_w <= 0) {
             winner = "Black";
@@ -90,25 +92,25 @@ public class ChessClock {
         return winner + " wins";
     }
 
-    public void reduce_timer(double millis){
+    public void reduce_timer(double millis) {
         if (game_running) {
-            if(whites_turn) {
+            if (whites_turn) {
                 if (timer_delay_w > 0) {
-                    timer_delay_w -= millis/1000;
+                    timer_delay_w -= millis / 1000;
                 } else {
-                    timer_w -= millis/1000;
+                    timer_w -= millis / 1000;
                 }
             } else {
                 if (timer_delay_b > 0) {
-                    timer_delay_b -= millis/1000;
+                    timer_delay_b -= millis / 1000;
                 } else {
-                    timer_b -= millis/1000;
+                    timer_b -= millis / 1000;
                 }
             }
         }
     }
 
-    public void change_turn(){
+    public void change_turn() {
         if (whites_turn) {
             timer_w = add_delay(timer_w, timer_delay_w);
             timer_delay_w = 0;
@@ -122,8 +124,8 @@ public class ChessClock {
         }
     }
 
-    public double add_delay(double timer, double timer_delay){
-        if (add_delay && timer_delay > 0){
+    public double add_delay(double timer, double timer_delay) {
+        if (add_delay && timer_delay > 0) {
             return timer + timer_delay;
         }
         return timer;
