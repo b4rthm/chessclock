@@ -6,6 +6,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     ChessClock chess_clock;
     boolean game_over;
+    AtomicBoolean change_layout;
     int rotateLayout;
     EditText min;
     EditText delay;
@@ -55,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         chess_clock = new ChessClock();
         long millis = 30;
         AtomicBoolean change_turn = new AtomicBoolean(false);
-        AtomicBoolean change_layout = new AtomicBoolean(false);
+        change_layout = new AtomicBoolean(false);
         /*
             Finding UI elements by ID
          */
@@ -108,15 +110,11 @@ public class MainActivity extends AppCompatActivity {
         */
         restartButton.setOnClickListener(view -> {
             chess_clock = new ChessClock();
-
             mainButton.setClickable(true);
             mainButton.setText(R.string.mainButtonStart);
-
             setGameUiVisible(false);
-
             setRotateLayout(0);
             doRotateLayout();
-
             game_over = false;
         });
         /*

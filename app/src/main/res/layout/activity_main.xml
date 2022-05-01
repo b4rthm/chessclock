@@ -5,7 +5,9 @@
     android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:orientation = "vertical"
+    android:gravity = "center">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/black_layout"
