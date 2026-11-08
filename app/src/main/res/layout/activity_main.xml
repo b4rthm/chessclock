@@ -1,275 +1,358 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:orientation = "vertical"
-    android:gravity = "center">
+    tools:context=".MainActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/black_layout"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainButton">
+    <!-- ============================ SETUP ============================ -->
 
-        <EditText
-            android:id="@+id/black"
-            android:layout_width="70dp"
+    <ScrollView
+        android:id="@+id/setup"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:autofillHints=""
-            android:ems="10"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:inputType="textPersonName"
-            android:scaleX="2.5"
-            android:scaleY="2.5"
-            android:text="@string/black"
-            android:textAlignment="center"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toTopOf="@+id/textView_b"
-            app:layout_constraintEnd_toEndOf="@+id/textView_b"
-            app:layout_constraintStart_toStartOf="@+id/textView_b" />
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="24dp">
 
-        <TextView
-            android:id="@+id/textView_b"
-            android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/setupTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:letterSpacing="0.15"
+                android:text="@string/setup_title"
+                android:textColor="@color/text_primary"
+                android:textSize="28sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/setupSubtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="@string/setup_subtitle"
+                android:textColor="@color/text_dim"
+                android:textSize="13sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:letterSpacing="0.2"
+                android:text="@string/section_category"
+                android:textColor="@color/text_dim"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/categoryChips"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:singleLine="true"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/bulletChip"
+                    style="@style/CategoryChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/bullet" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/blitzChip"
+                    style="@style/CategoryChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/blitz" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/rapidChip"
+                    style="@style/CategoryChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/rapid" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/classicalChip"
+                    style="@style/CategoryChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/classical" />
+            </com.google.android.material.chip.ChipGroup>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:letterSpacing="0.2"
+                android:text="@string/section_preset"
+                android:textColor="@color/text_dim"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/presetChips"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:singleLine="false"
+                app:singleSelection="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:letterSpacing="0.2"
+                android:text="@string/section_custom"
+                android:textColor="@color/text_dim"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/label_base_time"
+                        android:textColor="@color/text_dim"
+                        android:textSize="13sp" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/baseInput"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberDecimal"
+                            tools:text="10" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/label_increment"
+                        android:textColor="@color/text_dim"
+                        android:textSize="13sp" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/incrementInput"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="number"
+                            tools:text="5" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/startButton"
+                android:layout_width="match_parent"
+                android:layout_height="68dp"
+                android:layout_marginTop="32dp"
+                android:text="@string/start_game"
+                android:textSize="18sp"
+                app:cornerRadius="12dp" />
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- ============================= GAME ============================= -->
+
+    <LinearLayout
+        android:id="@+id/gameRoot"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scaleX="2.5"
-            android:scaleY="2.5"
-            android:text="TextView"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.6" />
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingStart="8dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="8dp">
 
-        <TextView
-            android:id="@+id/textView_b2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:scaleX="2.5"
-            android:scaleY="2.5"
-            android:text="TextView"
-            android:visibility="invisible"
-            app:layout_constraintEnd_toEndOf="@+id/textView_b"
-            app:layout_constraintStart_toStartOf="@+id/textView_b"
-            app:layout_constraintTop_toBottomOf="@+id/textView_b" />
+            <ImageButton
+                android:id="@+id/restart"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/action_restart"
+                app:srcCompat="@drawable/ic_power"
+                app:tint="@color/text_dim" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageButton
+                android:id="@+id/settingsButton"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_marginStart="12dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/action_settings"
+                app:srcCompat="@drawable/ic_settings"
+                app:tint="@color/text_dim" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/white_layout"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        app:layout_constraintBottom_toTopOf="@+id/mainButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+            <ImageButton
+                android:id="@+id/pause"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_marginStart="12dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/action_pause"
+                app:srcCompat="@drawable/ic_pause"
+                app:tint="@color/text_dim" />
+        </LinearLayout>
 
-        <EditText
-            android:id="@+id/white"
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:autofillHints=""
-            android:ems="10"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:inputType="textPersonName"
-            android:scaleX="2.5"
-            android:scaleY="2.5"
-            android:text="@string/white"
-            android:textAlignment="center"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toTopOf="@+id/textView_w"
-            app:layout_constraintEnd_toEndOf="@+id/textView_w"
-            app:layout_constraintStart_toStartOf="@+id/textView_w" />
+        <LinearLayout
+            android:id="@+id/panelContainer"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="8dp">
 
-        <TextView
-            android:id="@+id/textView_w"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scaleX="2.5"
-            android:scaleY="2.5"
-            android:text="TextView"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.6" />
+            <!-- Both clocks are tappable: tap the clock whose player just
+                 moved to switch the turn. The boxes never move; only the
+                 content orientation changes with the layout button. -->
 
-        <TextView
-            android:id="@+id/textView_w2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:scaleX="2.5"
-            android:scaleY="2.5"
-            android:text="TextView"
-            android:visibility="invisible"
-            app:layout_constraintEnd_toEndOf="@+id/textView_w"
-            app:layout_constraintStart_toStartOf="@+id/textView_w"
-            app:layout_constraintTop_toBottomOf="@+id/textView_w" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <FrameLayout
+                android:id="@+id/whitePanel"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_margin="4dp"
+                android:background="@drawable/clock_panel"
+                android:foreground="?attr/selectableItemBackground">
 
-    <Button
-        android:id="@+id/mainButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginEnd="25dp"
-        android:scaleX="2"
-        android:scaleY="2"
-        android:text="@string/mainButtonStart"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="visible" />
+                <FrameLayout
+                    android:id="@+id/whiteContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/min"
-        android:layout_width="50dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginBottom="15dp"
-        android:autofillHints=""
-        android:ems="10"
-        android:inputType="number|text|numberDecimal"
-        android:text="@string/_min_per_player"
-        android:textAlignment="center"
-        android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/delay"
-        app:layout_constraintStart_toStartOf="@+id/delay" />
+                    <TextView
+                        android:id="@+id/whiteName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top|center_horizontal"
+                        android:layout_marginTop="24dp"
+                        android:letterSpacing="0.2"
+                        android:text="@string/white"
+                        android:textColor="@color/text_dim"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/min_tw"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
-        android:text="@string/min_per_player"
-        android:textColor="?android:textColorPrimary"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="@+id/min"
-        app:layout_constraintEnd_toEndOf="@+id/delay_tw"
-        app:layout_constraintTop_toTopOf="@+id/min"
-        app:layout_constraintVertical_bias="0.51" />
+                    <TextView
+                        android:id="@+id/whiteTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="monospace"
+                        android:includeFontPadding="false"
+                        android:text="0:00.0"
+                        android:textColor="@color/text_primary"
+                        android:textSize="64sp"
+                        android:textStyle="bold"
+                        tools:text="10:00.0" />
 
-    <EditText
-        android:id="@+id/delay"
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginBottom="15dp"
-        android:autofillHints=""
-        android:ems="10"
-        android:inputType="number|numberDecimal"
-        android:minHeight="48dp"
-        android:text="@string/_sec_delay_per_turn"
-        android:textAlignment="center"
-        android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/thr"
-        app:layout_constraintStart_toStartOf="@+id/thr_tw" /><![CDATA[
-        30app:layout_constraintStart_toStartOf="parent" />
+                    <TextView
+                        android:id="@+id/whiteStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:layout_marginBottom="20dp"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/text_dim"
+                        android:textSize="15sp"
+                        tools:text="to move" />
+                </FrameLayout>
+            </FrameLayout>
 
-    ]]>
+            <FrameLayout
+                android:id="@+id/blackPanel"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_margin="4dp"
+                android:background="@drawable/clock_panel"
+                android:foreground="?attr/selectableItemBackground">
 
-    <TextView
-        android:id="@+id/delay_tw"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="12dp"
-        android:text="@string/sec_delay_per_turn"
-        android:textColor="?android:textColorPrimary"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="@+id/delay"
-        app:layout_constraintEnd_toEndOf="@+id/thr_tw"
-        app:layout_constraintTop_toTopOf="@+id/delay" />
+                <FrameLayout
+                    android:id="@+id/blackContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/thr"
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="109dp"
-        android:layout_marginBottom="15dp"
-        android:autofillHints=""
-        android:ems="10"
-        android:inputType="number|numberDecimal"
-        android:minHeight="48dp"
-        android:text="@string/_start_delay_min"
-        android:textAlignment="center"
-        android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/switch1"
-        app:layout_constraintStart_toStartOf="@+id/thr_tw" />
+                    <TextView
+                        android:id="@+id/blackName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top|center_horizontal"
+                        android:layout_marginTop="24dp"
+                        android:letterSpacing="0.2"
+                        android:text="@string/black"
+                        android:textColor="@color/text_dim"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/thr_tw"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/start_delay_in_final_t_t_t_t_t_t_min"
-        android:textColor="?android:textColorPrimary"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="@+id/thr"
-        app:layout_constraintEnd_toEndOf="@+id/switch1"
-        app:layout_constraintStart_toStartOf="@+id/switch1"
-        app:layout_constraintTop_toTopOf="@+id/thr" />
+                    <TextView
+                        android:id="@+id/blackTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="monospace"
+                        android:includeFontPadding="false"
+                        android:text="0:00.0"
+                        android:textColor="@color/text_primary"
+                        android:textSize="64sp"
+                        android:textStyle="bold"
+                        tools:text="10:00.0" />
 
-    <Switch
-        android:id="@+id/switch1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
-        android:checked="false"
-        android:minHeight="48dp"
-        android:text="@string/add_delay_to_timer"
-        android:textColor="?android:textColorPrimary"
-        android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/mainButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/restart"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:text="@string/restart"
-        android:visibility="invisible"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/pause"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:text="@string/pause"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageButton
-        android:id="@+id/changeLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/pause"
-        app:layout_constraintEnd_toStartOf="@+id/pause"
-        app:layout_constraintStart_toEndOf="@+id/restart"
-        app:layout_constraintTop_toTopOf="@+id/pause"
-        app:srcCompat="@android:drawable/stat_notify_sync" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+                    <TextView
+                        android:id="@+id/blackStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:layout_marginBottom="20dp"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/text_dim"
+                        android:textSize="15sp"
+                        tools:text="waiting" />
+                </FrameLayout>
+            </FrameLayout>
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

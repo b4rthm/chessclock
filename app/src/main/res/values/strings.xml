@@ -1,16 +1,63 @@
 <resources>
-    <string name="app_name">ChessClock</string>
-    <string name="min_per_player">min per player</string>
-    <string name="_min_per_player">10</string>
-    <string name="sec_delay_per_turn">sec delay per turn</string>
-    <string name="_sec_delay_per_turn">3</string>
-    <string name="start_delay_in_final_t_t_t_t_t_t_min">start delay in final \t\t\t\t\t\t min</string>
-    <string name="_start_delay_min">0.5</string>
-    <string name="add_delay_to_timer">add delay to timer</string>
-    <string name="mainButtonStart">Start\nGame</string>
+    <string name="app_name">Chess Clock</string>
+
+    <!-- Setup screen -->
+    <string name="setup_title">Time Control</string>
+    <string name="setup_subtitle">Pick a control, or enter your own</string>
+
+    <string name="section_category">CATEGORY</string>
+    <string name="section_preset">PRESET</string>
+    <string name="section_custom">CUSTOM</string>
+
+    <string name="category_bullet">Bullet</string>
+    <string name="category_blitz">Blitz</string>
+    <string name="category_rapid">Rapid</string>
+    <string name="category_classical">Classical</string>
+
+    <string name="category_title">Category</string>
+    <string name="preset_title">Preset</string>
+    <string name="bullet">Bullet</string>
+    <string name="blitz">Blitz</string>
+    <string name="rapid">Rapid</string>
+    <string name="classical">Classical</string>
+
+    <string name="label_base_time">Base time (min)</string>
+    <string name="label_increment">Increment (s)</string>
+    <string name="start_game">Start Game</string>
+
+    <string name="presets_bullet">1+0</string>
+    <string name="presets_blitz">3+2\n5+0\n5+1</string>
+    <string name="presets_rapid">10+5\n15+5\n15+10</string>
+    <string name="presets_classical">30+0\n30+20\n60+30</string>
+
+    <!-- Game screen -->
     <string name="white">White</string>
-    <string name="restart">Restart</string>
-    <string name="pause">Pause</string>
-    <string name="mainButtonSwitch">Switch\nTurn</string>
     <string name="black">Black</string>
+    <string name="status_to_move">to move</string>
+    <string name="status_waiting">waiting</string>
+    <string name="status_wins">wins</string>
+    <string name="status_flagged">flagged</string>
+    <string name="pause">Pause</string>
+    <string name="resume">Resume</string>
+    <string name="restart">Restart</string>
+    <string name="restart_confirm">Stop the current game and go back to setup?</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="action_restart">Restart</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_pause">Pause</string>
+
+    <!-- Settings dialog -->
+    <string name="settings">Settings</string>
+    <string name="row_layout">Layout</string>
+    <string name="row_design">Design</string>
+    <string name="layout_white_top">White on top</string>
+    <string name="layout_black_top">Black on top</string>
+    <string name="design_default">Default</string>
+    <string name="design_contrast">Contrast</string>
+    <string name="done">Done</string>
+
+    <!-- Validation -->
+    <string name="invalid_base">Enter a base time between 0.5 and 600 minutes</string>
+    <string name="invalid_increment">Enter the increment as whole seconds (0 or more)</string>
 </resources>

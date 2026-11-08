@@ -1,11 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="night">#7cb78e</color> <!--buttons night-->
-    <color name="night2">#7cb78e</color> <!--status bar night-->
-
-    <color name="day">#567775</color>    <!--buttons day-->
-    <color name="day2">#CB567775</color> <!--status bar day-->
-
+    <!-- Consistent dark "tournament table" surface in both day and night. -->
+    <color name="surface">#FF151C21</color>
+    <color name="panel">#FF24313A</color>
+    <color name="text_primary">#FFE8F1EF</color>
+    <color name="text_dim">#FF8FA3A0</color>
+    <color name="accent">#FF7CB78E</color>
+    <color name="warning">#FFE0654D</color>
+    <color name="panel_stroke">#33FFFFFF</color>
     <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+
+    <!-- "Contrast" design: the boxes are literally white and black, with the
+         opposite text color so each stays readable. -->
+    <color name="box_light">#FFF4F6F3</color>
+    <color name="box_dark">#FF07090B</color>
+    <color name="box_light_stroke">#59000000</color>
+    <color name="box_dark_stroke">#66FFFFFF</color>
+    <color name="text_on_light">#FF151C21</color>
+    <color name="text_on_light_dim">#8C151C21</color>
 </resources>
